@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>班級分組計分系統</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>班級分組計分系統</h1>
+        <div class="controls">
+            <button id="resetBtn" class="reset-btn" aria-label="重設今日分數">重設今日</button>
+            <button id="lockBtn" class="lock-btn" aria-label="鎖定計分系統">🔒</button>
+            <button id="helpBtn" class="help-btn" aria-label="顯示說明">❓</button>
+        </div>
+    </header>
+
+    <main class="scoreboard">
+        <div class="lanes-container">
+            <!-- 第一排：恐龍 -->
+            <div class="lane" data-lane="0">
+                <div class="vine-track">
+                    <div class="score-display">0</div>
+                    <div class="character-container">
+                        <div class="character red-dragon" style="--lane-color: #ff69b4;">
+                            <img src="dolls/1-1.png" alt="恐龍" class="character-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-row">
+                    <button class="arrow-btn up-btn" data-lane="0" aria-label="加一分">
+                        <span class="arrow">⬆️</span>
+                    </button>
+                    <button class="arrow-btn down-btn" data-lane="0" aria-label="減一分">
+                        <span class="arrow">⬇️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 第二排：猴子 -->
+            <div class="lane" data-lane="1">
+                <div class="vine-track">
+                    <div class="score-display">0</div>
+                    <div class="character-container">
+                        <div class="character brown-monkey" style="--lane-color: #ffa500;">
+                            <img src="dolls/2-1.png" alt="猴子" class="character-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-row">
+                    <button class="arrow-btn up-btn" data-lane="1" aria-label="加一分">
+                        <span class="arrow">⬆️</span>
+                    </button>
+                    <button class="arrow-btn down-btn" data-lane="1" aria-label="減一分">
+                        <span class="arrow">⬇️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 第三排：Tera -->
+            <div class="lane" data-lane="2">
+                <div class="vine-track">
+                    <div class="score-display">0</div>
+                    <div class="character-container">
+                        <div class="character blue-fluffy" style="--lane-color: #4169e1;">
+                            <img src="dolls/3-1.png" alt="Tera" class="character-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-row">
+                    <button class="arrow-btn up-btn" data-lane="2" aria-label="加一分">
+                        <span class="arrow">⬆️</span>
+                    </button>
+                    <button class="arrow-btn down-btn" data-lane="2" aria-label="減一分">
+                        <span class="arrow">⬇️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 第四排：Kiran -->
+            <div class="lane" data-lane="3">
+                <div class="vine-track">
+                    <div class="score-display">0</div>
+                    <div class="character-container">
+                        <div class="character astronaut" style="--lane-color: #00ced1;">
+                            <img src="dolls/4-1.png" alt="Kiran" class="character-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-row">
+                    <button class="arrow-btn up-btn" data-lane="3" aria-label="加一分">
+                        <span class="arrow">⬆️</span>
+                    </button>
+                    <button class="arrow-btn down-btn" data-lane="3" aria-label="減一分">
+                        <span class="arrow">⬇️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 第五排：Gobo -->
+            <div class="lane" data-lane="4">
+                <div class="vine-track">
+                    <div class="score-display">0</div>
+                    <div class="character-container">
+                        <div class="character yellow-spiky" style="--lane-color: #ffff00;">
+                            <img src="dolls/5-1.png" alt="Gobo" class="character-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-row">
+                    <button class="arrow-btn up-btn" data-lane="4" aria-label="加一分">
+                        <span class="arrow">⬆️</span>
+                    </button>
+                    <button class="arrow-btn down-btn" data-lane="4" aria-label="減一分">
+                        <span class="arrow">⬇️</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 第六排：企鵝 -->
+            <div class="lane" data-lane="5">
+                <div class="vine-track">
+                    <div class="score-display">0</div>
+                    <div class="character-container">
+                        <div class="character penguin" style="--lane-color: #8b4513;">
+                            <img src="dolls/6-1.png" alt="企鵝" class="character-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-row">
+                    <button class="arrow-btn up-btn" data-lane="5" aria-label="加一分">
+                        <span class="arrow">⬆️</span>
+                    </button>
+                    <button class="arrow-btn down-btn" data-lane="5" aria-label="減一分">
+                        <span class="arrow">⬇️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 說明浮層 -->
+    <div id="helpModal" class="modal" hidden>
+        <div class="modal-content">
+            <h2>使用說明</h2>
+            <ul>
+                <li>點擊 ⬆️ 箭頭為該隊伍加一分</li>
+                <li>點擊 ⬇️ 箭頭為該隊伍減一分</li>
+                <li>分數範圍：0-20分</li>
+                <li>當日分數會自動保存</li>
+                <li>午夜00:00後自動歸零</li>
+                <li>可使用鍵盤 ↑↓ 鍵操作</li>
+            </ul>
+            <button id="closeHelp" class="close-btn">關閉</button>
+        </div>
+    </div>
+
+    <!-- 重設確認浮層 -->
+    <div id="resetModal" class="modal" hidden>
+        <div class="modal-content">
+            <h2>確認重設</h2>
+            <p>確定要將今日所有分數歸零嗎？此操作無法復原。</p>
+            <div class="modal-buttons">
+                <button id="confirmReset" class="danger-btn">確定重設</button>
+                <button id="cancelReset" class="cancel-btn">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

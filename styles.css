@@ -1,0 +1,503 @@
+/* CSS變數定義 */
+:root {
+    --lanes: 6;
+    --levels: 20;
+    --lane-colors: #ff69b4, #ffa500, #4169e1, #00ced1, #ffff00, #8b4513;
+    --vine-color: #228b22;
+    --vine-leaf-color: #32cd32;
+    --ground-color: #8b4513;
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #ddd;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --transition-duration: 150ms;
+    --border-radius: 8px;
+    --spacing: 16px;
+}
+
+/* 基本樣式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft JhengHei', 'PingFang TC', 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* 減少動畫偏好 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 標題區域 */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.75rem var(--spacing);
+    text-align: center;
+    box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.reset-btn, .lock-btn, .help-btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-duration);
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+.reset-btn:hover, .lock-btn:hover, .help-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.lock-btn {
+    font-size: 1rem;
+    padding: 0.4rem;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+/* 主要計分板區域 */
+.scoreboard {
+    padding: var(--spacing);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.lanes-container {
+    display: grid;
+    grid-template-columns: repeat(var(--lanes), 1fr);
+    gap: var(--spacing);
+    align-items: start;
+}
+
+/* 單一賽道樣式 */
+.lane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.vine-track {
+    position: relative;
+    width: 100%;
+    height: calc(var(--levels) * 30px + 100px);
+    background: 
+        linear-gradient(to bottom, 
+            transparent 0%, 
+            transparent calc(100% - 100px),
+            var(--ground-color) calc(100% - 100px),
+            var(--ground-color) 100%
+        );
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+/* 藤蔓背景 */
+.vine-track::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 100%;
+    background: var(--vine-color);
+    border-radius: 3px;
+}
+
+/* 藤蔓葉子 */
+.vine-track::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 30% 20%, var(--vine-leaf-color) 0%, transparent 6px),
+        radial-gradient(circle at 70% 40%, var(--vine-leaf-color) 0%, transparent 8px),
+        radial-gradient(circle at 20% 60%, var(--vine-leaf-color) 0%, transparent 10px),
+        radial-gradient(circle at 80% 80%, var(--vine-leaf-color) 0%, transparent 7px);
+    background-size: 80px 80px;
+    opacity: 0.6;
+}
+
+/* 分數顯示 */
+.score-display {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-color);
+    box-shadow: 0 2px 8px var(--shadow-color);
+    z-index: 10;
+}
+
+/* 公仔容器 */
+.character-container {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 165px;
+    height: 165px;
+    transition: bottom var(--transition-duration) ease-out;
+}
+
+/* 公仔基本樣式 */
+.character {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-duration);
+    overflow: hidden;
+}
+
+.character:hover {
+    transform: scale(1.05);
+}
+
+/* 公仔圖片樣式 */
+.character-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: all var(--transition-duration);
+    opacity: 1;
+}
+
+/* 各公仔的具體樣式（移除背景以顯示透明PNG） */
+.red-dragon {
+    background: transparent;
+}
+
+.brown-monkey {
+    background: transparent;
+}
+
+.blue-fluffy {
+    background: transparent;
+}
+
+.astronaut {
+    background: transparent;
+}
+
+.yellow-spiky {
+    background: transparent;
+}
+
+.penguin {
+    background: transparent;
+}
+
+/* 控制按鈕區域 */
+.controls-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    justify-content: center;
+}
+
+.arrow-btn {
+    width: 56px;
+    height: 56px;
+    border: none;
+    border-radius: 50%;
+    background: var(--lane-color, #666);
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-duration);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.arrow-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.arrow-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.arrow-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 各排按鈕顏色 */
+.lane[data-lane="0"] .arrow-btn { --lane-color: #ff69b4; }
+.lane[data-lane="1"] .arrow-btn { --lane-color: #ffa500; }
+.lane[data-lane="2"] .arrow-btn { --lane-color: #4169e1; }
+.lane[data-lane="3"] .arrow-btn { --lane-color: #00ced1; }
+.lane[data-lane="4"] .arrow-btn { --lane-color: #ffff00; color: #333; }
+.lane[data-lane="5"] .arrow-btn { --lane-color: #8b4513; }
+
+/* 箭頭樣式 */
+.arrow {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+/* 模態框樣式 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-duration);
+}
+
+.modal:not([hidden]) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px var(--shadow-color);
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.modal-content ul {
+    text-align: left;
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.modal-content li {
+    margin-bottom: 0.5rem;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.close-btn, .cancel-btn {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: white;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all var(--transition-duration);
+}
+
+.close-btn:hover, .cancel-btn:hover {
+    background: #f5f5f5;
+}
+
+.danger-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background: #dc3545;
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-duration);
+}
+
+.danger-btn:hover {
+    background: #c82333;
+}
+
+/* 鍵盤焦點樣式 */
+.arrow-btn:focus,
+.reset-btn:focus,
+.lock-btn:focus,
+.help-btn:focus {
+    outline: 3px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* 響應式設計 */
+@media (max-width: 1200px) {
+    .lanes-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .scoreboard {
+        padding: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .lanes-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .vine-track {
+        height: calc(var(--levels) * 25px + 80px);
+    }
+    
+    .character {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .character-container {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .score-display {
+        font-size: 1rem;
+        padding: 0.3rem 0.6rem;
+    }
+    
+    header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .controls {
+        gap: 0.5rem;
+    }
+    
+    .reset-btn, .help-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    
+    .arrow-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+    
+    .arrow {
+        font-size: 1.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .lanes-container {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .controls-row {
+        gap: 0.5rem;
+    }
+    
+    .arrow-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+    
+    .arrow {
+        font-size: 1.5rem;
+    }
+    
+    .modal-content {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+}
+
+/* 觸控優化 */
+@media (hover: none) and (pointer: coarse) {
+    .arrow-btn {
+        min-width: 56px;
+        min-height: 56px;
+    }
+    
+    .character:hover {
+        transform: none;
+    }
+}
+
+/* 高對比度模式支援 */
+@media (prefers-contrast: high) {
+    .arrow-btn {
+        border: 2px solid currentColor;
+    }
+    
+    .score-display {
+        border: 2px solid currentColor;
+    }
+}
+
+/* 列印樣式 */
+@media print {
+    .controls,
+    .arrow-btn,
+    .modal {
+        display: none !important;
+    }
+    
+    .vine-track {
+        background: white !important;
+        border: 1px solid #000;
+    }
+    
+    .character {
+        background: #ccc !important;
+        color: #000 !important;
+    }
+}
